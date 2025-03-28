@@ -13,7 +13,8 @@ docker-compose.override.yml
 
 # Ignore named volumes if you mount them locally
 volume-data/
-data/
+
+# data/
 
 # ---- R / RStudio (for Hermes module) ----
 .Rhistory
