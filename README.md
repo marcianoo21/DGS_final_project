@@ -9,6 +9,8 @@ The project is divided into two main parts:
 ---
 
 ## 📁 Project Structure
+
+```
 DGS_FINAL_PROJECT/
 │
 ├── data/                         # Input/output data files
@@ -44,18 +46,8 @@ DGS_FINAL_PROJECT/
 ├── TODO.md
 ├── README.md
 └── .gitignore
+```
 
-
-
-## 🧪 Tools & Technologies
-
-- **Python** (Pandas, VCF parser, NetworkX/Matplotlib)
-- **SQLite** (or PostgreSQL/MySQL)
-- **VCF Format** parsing and manipulation
-- **SQL** for comparison and reporting
-- **Optional:** Docker for environment reproducibility
-
----
 
 ## 🚀 How to Run the Project
 
