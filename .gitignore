@@ -1,0 +1,42 @@
+# ---- OS & Editor files ----
+.DS_Store
+Thumbs.db
+*.log
+
+# ---- Docker ----
+*.pid
+*.seed
+*.bak
+*.swp
+.env
+docker-compose.override.yml
+
+# Ignore named volumes if you mount them locally
+volume-data/
+data/
+
+# ---- R / RStudio (for Hermes module) ----
+.Rhistory
+.RData
+.Rproj.user/
+*.Rproj
+.Ruserdata
+
+# ---- VS Code (if you're using it) ----
+.vscode/
+
+# ---- Python (just in case) ----
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints/
+
+# ---- Node.js (in case you use it for Sibila/Ulysses UI) ----
+node_modules/
+dist/
+build/
+.env.local
+.env.*.local
+
+# ---- OneDrive artifacts ----
+~$*
+*.tmp
