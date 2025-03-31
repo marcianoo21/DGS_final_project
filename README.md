@@ -1,4 +1,5 @@
-# 🧬 DGS Final Project – Monogenic Diabetes Variant Analysis
+# 🧬 DGS Final Project 
+# – Monogenic Diabetes Variant Analysis
 
 This project evaluates the clinical utility of the DELFOS platform by comparing its ability to identify Monogenic Diabetes-related genetic variants against ClinGen, the current gold standard.
 
@@ -28,7 +29,7 @@ DGS_FINAL_PROJECT/
 ├── db/                           # Database-related files
 │
 ├── results/                      # Generated results and plots
-│   └── hermes
+│   └── hermes/
 │       ├── hermes_data.json
 │       └── relevant_genes.json
 │
