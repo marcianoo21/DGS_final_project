@@ -14,9 +14,6 @@ The project is divided into two main parts:
 DGS_FINAL_PROJECT/
 │
 ├── data/                         # Input/output data files
-│   ├── hermes_raw_variants.csv
-│   ├── ulises_filtered_variants.csv
-│   ├── monogenic_variants.vcf
 │   ├── VCF_clingen_GRCh38.vcf
 │   └── patient_vcf_file.vcf
 │
@@ -29,17 +26,13 @@ DGS_FINAL_PROJECT/
 │   └── sibila_visualization.py
 │
 ├── db/                           # Database-related files
-│   ├── delfos_schema.sql
-│   └── delfos_data.sqlite
 │
 ├── results/                      # Generated results and plots
-│   ├── comparison_summary.csv
-│   ├── statistics_report.csv
-│   └── sibila_graph.png
+│   └── hermes
+│       ├── hermes_data.json
+│       └── relevant_genes.json
 │
-├── reports/                      # Final documentation
-│   ├── final_report.pdf
-│   └── presentation_slides.pdf
+├── reports/                      # Final documentation pdf
 │
 ├── docker-compose.yaml
 ├── LICENSE
@@ -50,30 +43,36 @@ DGS_FINAL_PROJECT/
 
 
 ## 🚀 How to Run the Project
+// TODO: Add instructions on how to run the project
 
-```bash
-# 1. Setup Database
-sqlite3 db/delfos_data.sqlite < db/delfos_schema.sql
 
-# 2. Hermes – Variant Collection
-python scripts/hermes_fetch.py
-# (Alternatively, manually place hermes_raw_variants.csv in the data/ directory)
+## 🧾 Technical Documentation
+The final technical document must be written in scientific-article style and include the following sections:
 
-# 3. Ulises – Clinical Filtering
-python scripts/ulises_filter.py
+### A. Introduction
 
-# Then convert to VCF format
-python scripts/ulises_to_vcf.py
+- Background on Monogenic Diabetes and its relevance in genomic medicine.
+- The importance of accurate genetic variant interpretation for clinical decision-making.
+- Motivation for comparing the DELFOS platform with the ClinGen gold standard to assess clinical utility.
 
-# 4. Delfos – Insert into SQL Database
-python scripts/delfos_db_insert.py
+### B. Project Part I Results
 
-# 5. Sibila – Visualizations
-python scripts/sibila_visualization.py
+- **Hermes:**  
+  Overview of the methodology used to gather genetic variants related to Monogenic Diabetes using the Hermes module.  
+  This involved retrieving all relevant variant data needed to enrich the Delfos knowledge base, enabling meaningful interpretation of patient-specific variants.
 
-# 6. Comparison: DELFOS vs ClinGen
-python scripts/compare_vcfs.py
-```
+- **Ulises:**  
+  Summary of the clinically relevant variants identified using the Ulises module.  
+  These variants were filtered for clinical significance to ensure relevance for diagnosis and treatment decisions in Monogenic Diabetes.
+
+- **Sibila:**  
+  Visual insights generated using Sibila, focusing on relationships between variants and associated clinical features.  
+  These visualizations supported interpretation by illustrating genotype–phenotype correlations, helping to validate the relevance of identified variants.
+
+
+## 👨🏻‍🏫 Presentation
+Click [here](https://www.canva.com/design/DAGjSsQyAbA/1Lu7jkZztlKkHk9UyDtXvA/edit?utm_content=DAGjSsQyAbA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) to access the presentation.
+
 
 ## 👥 Authors
 

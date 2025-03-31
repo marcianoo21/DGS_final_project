@@ -3,10 +3,10 @@
 ## 🧬 PART I: Knowledge Base Integration for Monogenic Diabetes
 
 ### 1. Hermes – Collect All Monogenic Diabetes-Related Variants
-- [ ] Research Monogenic Diabetes genes (e.g., HNF1A, GCK, etc.)
-- [ ] Extract related variants from public datasets (ClinVar, OMIM, etc.)
-- [ ] Save collected data as `data/hermes_raw_variants.csv`
-- [ ] (Optional) Create `scripts/hermes_fetch.py` to simulate the collection process
+- [X] Research Monogenic Diabetes genes (e.g., HNF1A, GCK, etc.)
+- [X] Extract related variants from public datasets (ClinVar, OMIM, etc.) using `scripts/HermesScript.R`
+- [X] Integrate the data and perdform data preparation.
+- [X] Save collected data as `db/hermes_data.json` and `db/relevant_genes.json`
 
 ### 2. Ulises – Identify Clinically Relevant Variants
 - [ ] Filter Hermes output to retain only pathogenic / likely pathogenic variants

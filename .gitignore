@@ -3,6 +3,14 @@
 Thumbs.db
 *.log
 
+# ---- Build files ----
+.config
+.local
+.cache
+
+# Ignore raw LOVD downloads
+data/lovd_data/
+
 # ---- Docker ----
 *.pid
 *.seed
