@@ -18,7 +18,7 @@ data/lovd_data/
 *.swp
 .env
 docker-compose.override.yml
-docker-compose.yml
+docker-compose.yaml
 
 # Ignore named volumes if you mount them locally
 volume-data/
