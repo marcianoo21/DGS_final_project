@@ -1,10 +1,10 @@
 services:
   hermes:
     image: anleopa/hermes:latest
-    ports: 
+    ports:
       - 8787:8787
     volumes:
-      - D:\OneDrive - Politechnika Łódzka\Dokumenty\TUL\semester6\dgs\DGS_final_project:/home/rstudio ## ADJUST PATH
+      - C:\Users\mgrze\OneDrive\Pulpit\stud\Erasmus\Genom\Project:/home/rstudio
     environment:
       - DISABLE_AUTH=true
   ulises-backend:
@@ -12,7 +12,7 @@ services:
     ports:
       - "2090:2090"
     working_dir: /app/ulises
-    command: npm run run_production --port 2090  # Run in production mode
+    command: npm run run_production --port 2090 # Run in production mode
     environment:
       - PORT=2090
     networks:
@@ -24,7 +24,7 @@ services:
       - "3010:3010"
       - "3306:3306"
     working_dir: /app/delfos
-    entrypoint: ['/usr/local/bin/entrypoint.sh']
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
     environment:
       - NODE_OPTIONS=--openssl-legacy-provider
     networks:
@@ -35,7 +35,7 @@ services:
     ports:
       - "3030:3030"
     working_dir: /app/sibila
-    command: npm run run_production --port 3030  # Run in production mode
+    command: npm run run_production --port 3030 # Run in production mode
     environment:
       - NODE_OPTIONS=--openssl-legacy-provider
       - PORT=3030
