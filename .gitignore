@@ -20,6 +20,7 @@ data/lovd_data/
 docker-compose.override.yml
 docker-compose.yaml
 
+
 # Ignore named volumes if you mount them locally
 volume-data/
 
