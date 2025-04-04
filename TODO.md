@@ -7,26 +7,19 @@
 - [X] Extract related variants from public datasets (ClinVar, OMIM, etc.) using `scripts/HermesScript.R`
 - [X] Integrate the data and perdform data preparation.
 - [X] Save collected data as `db/hermes_data.json` and `db/relevant_genes.json`
+- [ ] Documentation
 
 ### 2. Ulises – Identify Clinically Relevant Variants
-- [ ] Filter Hermes output to retain only pathogenic / likely pathogenic variants
-- [ ] Save filtered results to `data/ulises_filtered_variants.csv`
-- [ ] Use `ulises_to_vcf.py` to convert to `data/monogenic_variants.vcf`
+- [X] Ulises
+- [ ] Documentation
 
 ### 3. Delfos – Import Data into SQL Database
-- [ ] Define schema in `db/delfos_schema.sql` (variants, genes, clinical_significance, etc.)
-- [ ] Create and populate the SQL database (`delfos_data.sqlite` or PostgreSQL)
-- [ ] Import:
-  - `monogenic_variants.vcf` (Ulises output)
-  - `VCF_clingen_GRCh38.vcf` (ClinGen gold standard)
-- [ ] Store both datasets in separate tables (e.g., `delfos_variants`, `clingen_variants`)
+- [X] Delfos
+- [ ] Documentation
 
 ### 4. Sibila – Visualize Variant–Phenotype Relationships
-- [ ] Query variant-gene-condition relationships from the database
-- [ ] Create visualizations using `scripts/sibila_visualization.py`
-  - Network graph (e.g., NetworkX)
-  - Frequency charts (e.g., Matplotlib/Seaborn)
-- [ ] Save visual outputs in `results/`
+- [X] Save visual outputs in `results/`
+- [ ] Documentation
 
 ---
 
