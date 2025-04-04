@@ -4,7 +4,7 @@ services:
     ports:
       - 8787:8787
     volumes:
-      - D:\OneDrive - Politechnika Łódzka\Dokumenty\TUL\semester6\dgs\DGS_final_project:/home/rstudio ## ADJUST PATH
+      - C:\Users\mgrze\OneDrive\Pulpit\stud\Erasmus\Genom\Project:/home/rstudio
     environment:
       - DISABLE_AUTH=true
   ulises-backend:
