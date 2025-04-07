@@ -60,35 +60,57 @@ def load_clingen(vcf_path):
         print("✅ ClinGen data inserted.")
 
 
-# def load_delfos(vcf_path, db_path="db/variants.db"):
-#     print("Loading Delfos VCF...")
-#     conn = sqlite3.connect(db_path)
-#     cursor = conn.cursor()
+def load_delfos(vcf_path):
+    with open(vcf_path, 'r') as f:
+        conn = sqlite3.connect("db/variants.db")
+        cursor = conn.cursor()
 
-#     with open(vcf_path) as file:
-#         for line in file:
-#             if line.startswith("#"):
-#                 continue
-#             fields = line.strip().split('\t')
-#             chrom, pos, _, ref, alt, _, _, info = fields[:8]
+        for line in f:
+            line = line.strip()
+            if line.startswith('##'):
+                continue  # Skip metadata
+            if line.startswith('#CHROM'):
+                headers = line[1:].split('\t')  # skip '#' in '#CHROM'
+                continue
+            if not line:
+                continue
 
-#             classification = "unknown"
-#             for item in info.split(";"):
-#                 if item.startswith("STATUS="):
-#                     classification = item.split("=")[1].lower()
+            fields = line.split('\t')
+            record = dict(zip(headers, fields))
 
-#             variant_id = insert_variant(cursor, chrom, int(pos), ref, alt)
+            # Parse INFO field into a dictionary
+            info_fields = dict(item.split('=') for item in record['INFO'].split(';'))
 
-#             cursor.execute('''
-#                 INSERT INTO Delfos_Data (variant_id, classification)
-#                 VALUES (?, ?)
-#             ''', (variant_id, classification))
+            # Prepare values to insert
+            values = (
+                record['CHROM'],
+                int(record['POS']),
+                record['ID'],
+                record['REF'],
+                record['ALT'],
+                record['QUAL'],
+                record['FILTER'],
+                info_fields.get('PHENOTYPE', ''),
+                info_fields.get('INTERPRETATION', ''),
+                info_fields.get('INTERPRETATION_REASON', ''),
+                info_fields.get('CLINICAL_ACTIONABILITY', ''),
+                info_fields.get('GENE', ''),
+                info_fields.get('VARIANT_ID', '')
+            )
 
-#     conn.commit()
-#     conn.close()
-#     print("✅ Delfos data inserted.")
+            cursor.execute('''
+                INSERT INTO Delfos_Data (
+                    CHROM, POS, ID, REF, ALT, QUAL, FILTER,
+                    PHENOTYPE, INTERPRETATION, INTERPRETATION_REASON,
+                    CLINICAL_ACTIONABILITY, GENE, VARIANT_ID
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', values)
+
+    # 4. Commit and close
+    conn.commit()
+    conn.close()
 
 
 if __name__ == "__main__":
-    load_clingen("data/VCF_clingen.vcf")
-    # load_delfos("data/VCF_ulises.vcf")
+    # load_clingen("data/VCF_clingen.vcf")
+    load_delfos("data/VCF_ulises.vcf")
