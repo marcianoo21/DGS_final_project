@@ -14,6 +14,7 @@ reports/
 
 # Ignore raw LOVD downloads
 data/lovd_data/
+db/variants.db
 
 # ---- Docker ----
 *.pid
