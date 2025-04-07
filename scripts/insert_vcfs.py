@@ -111,6 +111,7 @@ def load_delfos(vcf_path):
     # 4. Commit and close
     conn.commit()
     conn.close()
+    print("✅ Delfos data inserted.")
 
 
 if __name__ == "__main__":
