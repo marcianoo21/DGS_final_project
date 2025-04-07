@@ -1,21 +1,22 @@
 import sqlite3
 
-# def insert_variant(cursor, chrom, pos, ref, alt):
-#     """Insert variant if it doesn't already exist. Return variant_id."""
-#     cursor.execute('''
-#         SELECT idVariant FROM Variant
-#         WHERE chr = ? AND pos = ? AND referenceAllele = ? AND altAllele = ?
-#     ''', (chrom, pos, ref, alt))
-#     result = cursor.fetchone()
+def insert_variant(cursor, chrom, pos, ref, alt):
+    """Insert variant if not exists, return its ID."""
+    cursor.execute('''
+        SELECT idVariant FROM Variant
+        WHERE chr = ? AND pos = ? AND referenceAllele = ? AND altAllele = ?
+    ''', (chrom, pos, ref, alt))
+    result = cursor.fetchone()
+    
+    if result:
+        return result[0]
+    else:
+        cursor.execute('''
+            INSERT INTO Variant (chr, pos, referenceAllele, altAllele)
+            VALUES (?, ?, ?, ?)
+        ''', (chrom, pos, ref, alt))
+        return cursor.lastrowid
 
-#     if result:
-#         return result[0]
-#     else:
-#         cursor.execute('''
-#             INSERT INTO Variant (chr, pos, referenceAllele, altAllele)
-#             VALUES (?, ?, ?, ?)
-#         ''', (chrom, pos, ref, alt))
-#         return cursor.lastrowid
 
 
 def parse_info(info_field):
@@ -28,21 +29,25 @@ def parse_info(info_field):
 
 
 def load_clingen(vcf_path):
-    # Read the VCF content
     with open(vcf_path, 'r') as file:
         conn = sqlite3.connect("db/variants.db")
         cursor = conn.cursor()
 
         for line in file:
             if line.startswith('#'):
-                continue  # Skip headers
+                continue
             parts = line.strip().split('\t')
             chrom, pos, id_, ref, alt, qual, filt, info = parts
             info_dict = parse_info(info)
 
+            variant_id = insert_variant(cursor, chrom, int(pos), ref, alt)
+
             cursor.execute('''
-            INSERT INTO ClinGen_Data (CHROM, POS, ID, REF, ALT, QUAL, FILTER, INTERPRETATION, MET_CRITERIA, NOT_MET_CRITERIA, EXPERT_PANEL)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO ClinGen_Data (
+                    CHROM, POS, ID, REF, ALT, QUAL, FILTER,
+                    INTERPRETATION, MET_CRITERIA, NOT_MET_CRITERIA,
+                    EXPERT_PANEL, VARIANT_ID
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 chrom,
                 int(pos),
@@ -55,11 +60,13 @@ def load_clingen(vcf_path):
                 info_dict.get('MET_CRITERIA'),
                 info_dict.get('NOT_MET_CRITERIA'),
                 info_dict.get('EXPERT_PANEL'),
+                variant_id
             ))
 
         conn.commit()
         conn.close()
         print("✅ ClinGen data inserted.")
+
 
 
 def load_delfos(vcf_path):
@@ -70,20 +77,26 @@ def load_delfos(vcf_path):
         for line in f:
             line = line.strip()
             if line.startswith('##'):
-                continue  # Skip metadata
+                continue
             if line.startswith('#CHROM'):
-                headers = line[1:].split('\t')  # skip '#' in '#CHROM'
+                headers = line[1:].split('\t')
                 continue
             if not line:
                 continue
 
             fields = line.split('\t')
             record = dict(zip(headers, fields))
-
-            # Parse INFO field into a dictionary
             info_fields = dict(item.split('=') for item in record['INFO'].split(';'))
 
-            # Prepare values to insert
+            # Insert variant and get its ID
+            variant_id = insert_variant(
+                cursor,
+                record['CHROM'],
+                int(record['POS']),
+                record['REF'],
+                record['ALT']
+            )
+
             values = (
                 record['CHROM'],
                 int(record['POS']),
@@ -97,7 +110,7 @@ def load_delfos(vcf_path):
                 info_fields.get('INTERPRETATION_REASON', ''),
                 info_fields.get('CLINICAL_ACTIONABILITY', ''),
                 info_fields.get('GENE', ''),
-                info_fields.get('VARIANT_ID', '')
+                variant_id
             )
 
             cursor.execute('''
@@ -108,10 +121,10 @@ def load_delfos(vcf_path):
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', values)
 
-    # 4. Commit and close
-    conn.commit()
-    conn.close()
-    print("✅ Delfos data inserted.")
+        conn.commit()
+        conn.close()
+        print("✅ Delfos data inserted.")
+
 
 
 if __name__ == "__main__":
