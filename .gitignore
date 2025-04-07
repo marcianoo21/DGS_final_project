@@ -9,6 +9,9 @@ Thumbs.db
 .cache
 venv/
 
+# ---- Reports generations ----
+reports/
+
 # Ignore raw LOVD downloads
 data/lovd_data/
 
