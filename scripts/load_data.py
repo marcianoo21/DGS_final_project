@@ -18,17 +18,19 @@ def create_tables(db_path="db/variants.db"):
     # Table for ClinGen annotations
     c.execute('''
         CREATE TABLE IF NOT EXISTS ClinGen_Data (
-            chrom TEXT,
-            pos INTEGER,
-            id TEXT,
-            ref TEXT,
-            alt TEXT,
-            interpretation TEXT,
-            met_criteria TEXT,
-            not_met_criteria TEXT,
-            expert_panel TEXT,
-            variant_id INTEGER,
-            FOREIGN KEY (variant_id) REFERENCES Variant(idVariant)
+            CHROM TEXT,
+            POS INTEGER,
+            ID TEXT,
+            REF TEXT,
+            ALT TEXT,
+            QUAL TEXT,
+            FILTER TEXT,
+            INTERPRETATION TEXT,
+            MET_CRITERIA TEXT,
+            NOT_MET_CRITERIA TEXT,
+            EXPERT_PANEL TEXT,
+            VARIANT_ID INTEGER,
+            FOREIGN KEY (VARIANT_ID) REFERENCES Variant(idVariant)
         )
     ''')
 
@@ -57,3 +59,4 @@ def create_tables(db_path="db/variants.db"):
 
 if __name__ == "__main__":
     create_tables("db/variants.db")
+    print("Data loaded correctly!")

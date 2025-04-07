@@ -41,14 +41,16 @@ def load_clingen(vcf_path):
             info_dict = parse_info(info)
 
             cursor.execute('''
-                INSERT INTO ClinGen_Data (chrom, pos, id, ref, alt, interpretation, met_criteria, not_met_criteria, expert_panel)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO ClinGen_Data (CHROM, POS, ID, REF, ALT, QUAL, FILTER, INTERPRETATION, MET_CRITERIA, NOT_MET_CRITERIA, EXPERT_PANEL)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 chrom,
                 int(pos),
                 id_,
                 ref,
                 alt,
+                qual,
+                filt,
                 info_dict.get('INTERPRETATION'),
                 info_dict.get('MET_CRITERIA'),
                 info_dict.get('NOT_MET_CRITERIA'),
@@ -112,5 +114,5 @@ def load_delfos(vcf_path):
 
 
 if __name__ == "__main__":
-    # load_clingen("data/VCF_clingen.vcf")
+    load_clingen("data/VCF_clingen.vcf")
     load_delfos("data/VCF_ulises.vcf")
