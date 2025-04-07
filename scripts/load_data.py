@@ -18,9 +18,16 @@ def create_tables(db_path="db/variants.db"):
     # Table for ClinGen annotations
     c.execute('''
         CREATE TABLE IF NOT EXISTS ClinGen_Data (
-            idClinGen INTEGER PRIMARY KEY AUTOINCREMENT,
+            chrom TEXT,
+            pos INTEGER,
+            id TEXT,
+            ref TEXT,
+            alt TEXT,
+            interpretation TEXT,
+            met_criteria TEXT,
+            not_met_criteria TEXT,
+            expert_panel TEXT,
             variant_id INTEGER,
-            clinical_significance TEXT,
             FOREIGN KEY (variant_id) REFERENCES Variant(idVariant)
         )
     ''')
@@ -28,10 +35,20 @@ def create_tables(db_path="db/variants.db"):
     # Table for Delfos annotations
     c.execute('''
         CREATE TABLE IF NOT EXISTS Delfos_Data (
-            idDelfos INTEGER PRIMARY KEY AUTOINCREMENT,
-            variant_id INTEGER,
-            classification TEXT,
-            FOREIGN KEY (variant_id) REFERENCES Variant(idVariant)
+            CHROM TEXT,
+            POS INTEGER,
+            ID TEXT,
+            REF TEXT,
+            ALT TEXT,
+            QUAL TEXT,
+            FILTER TEXT,
+            PHENOTYPE TEXT,
+            INTERPRETATION TEXT,
+            INTERPRETATION_REASON TEXT,
+            CLINICAL_ACTIONABILITY TEXT,
+            GENE TEXT,
+            VARIANT_ID INTEGER,
+            FOREIGN KEY (VARIANT_ID) REFERENCES Variant(idVariant)
         )
     ''')
 
@@ -39,4 +56,4 @@ def create_tables(db_path="db/variants.db"):
     conn.close()
 
 if __name__ == "__main__":
-    create_tables()
+    create_tables("db/variants.db")
