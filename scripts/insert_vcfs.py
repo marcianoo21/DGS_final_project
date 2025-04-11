@@ -39,7 +39,7 @@ def load_clingen(vcf_path):
             parts = line.strip().split('\t')
             chrom, pos, id_, ref, alt, qual, filt, info = parts
             info_dict = parse_info(info)
-
+            print("INFO DICT", info_dict.get('INTERPRETATION'))
             variant_id = insert_variant(cursor, chrom, int(pos), ref, alt)
 
             cursor.execute('''
