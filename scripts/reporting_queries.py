@@ -15,10 +15,14 @@ def query_all_variant_interpretations(conn):
         c.INTERPRETATION AS ClinGen_Interpretation,
         d.INTERPRETATION AS Delfos_Interpretation
     FROM Variant v
-    LEFT JOIN ClinGen_Data c ON v.idVariant = c.VARIANT_ID
-    LEFT JOIN Delfos_Data d ON v.idVariant = d.VARIANT_ID
+    INNER JOIN ClinGen_Data c ON v.idVariant = c.VARIANT_ID
+    INNER JOIN Delfos_Data d ON v.idVariant = d.VARIANT_ID
+    WHERE c.INTERPRETATION = 'Likely Pathogenic' OR c.INTERPRETATION = 'Pathogenic' AND d.INTERPRETATION LIKE '%ACCEPTED%'
     '''
-    return pd.read_sql_query(query, conn)
+    df = pd.read_sql_query(query, conn)
+    print("\n🧪 Sample from All Variant Interpretations:")
+    print(df.head())
+    return df
 
 def query_conflicting_interpretations(conn):
     query = '''
@@ -60,12 +64,15 @@ def export_to_excel(dfs: dict, filename: str):
 
     with pd.ExcelWriter(filepath, engine='xlsxwriter') as writer:
         for sheet_name, df in dfs.items():
-            df.to_excel(writer, sheet_name=sheet_name[:31], index=False)  # Excel sheet names max = 31 chars
-    print(f"📁 Excel file exported to: {filepath}")
+            df.to_excel(writer, sheet_name=sheet_name[:31], index=False)
+    print(f"\n📁 Excel file exported to: {filepath}")
 
 def run_all_reports():
     conn = connect_db()
 
+    print( "All_Variant_Interpretations", query_all_variant_interpretations(conn))
+    print("Conflicting_Interpretations", query_conflicting_interpretations(conn))
+    print("Actionable_Variants", query_actionable_variants(conn))
     dfs = {
         "All_Variant_Interpretations": query_all_variant_interpretations(conn),
         "Conflicting_Interpretations": query_conflicting_interpretations(conn),
@@ -74,7 +81,7 @@ def run_all_reports():
 
     export_to_excel(dfs, "variant_report.xlsx")
     conn.close()
-    print("✅ All reports saved to Excel!")
+    print("\n✅ All reports saved to Excel!")
 
 if __name__ == "__main__":
     run_all_reports()
