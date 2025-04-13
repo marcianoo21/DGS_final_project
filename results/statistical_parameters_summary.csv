@@ -1,0 +1,9 @@
+Metric,Value
+Total variants analyzed,568.0
+Concordant interpretations,435.0
+Discordant interpretations,0.0
+Not accepted by DELFOS,0.0
+No ClinGen match,133.0
+Concordance rate (%),76.58
+Discordance rate (%),0.0
+ClinGen coverage rate (%),76.58
