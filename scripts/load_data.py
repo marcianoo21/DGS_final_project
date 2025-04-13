@@ -1,62 +1,46 @@
 import sqlite3
+import pandas as pd
+from io import StringIO
 
-def create_tables(db_path="db/variants.db"):
-    conn = sqlite3.connect(db_path)
-    c = conn.cursor()
+# --- CONFIG ---
+CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
+DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
+DB_PATH = "db/variants.db"
 
-    # Create table for unique variants
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS Variant (
-            idVariant INTEGER PRIMARY KEY AUTOINCREMENT,
-            chr TEXT,
-            pos INTEGER,
-            referenceAllele TEXT,
-            altAllele TEXT
-        )
-    ''')
+# --- Connect & Recreate Tables ---
+conn = sqlite3.connect(DB_PATH)
+cur = conn.cursor()
 
-    # Table for ClinGen annotations
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS ClinGen_Data (
-            CHROM TEXT,
-            POS INTEGER,
-            ID TEXT,
-            REF TEXT,
-            ALT TEXT,
-            QUAL TEXT,
-            FILTER TEXT,
-            INTERPRETATION TEXT,
-            MET_CRITERIA TEXT,
-            NOT_MET_CRITERIA TEXT,
-            EXPERT_PANEL TEXT,
-            VARIANT_ID INTEGER,
-            FOREIGN KEY (VARIANT_ID) REFERENCES Variant(idVariant)
-        )
-    ''')
+cur.executescript("""
+DROP TABLE IF EXISTS ClinGen_Variants;
+DROP TABLE IF EXISTS DELFOS_Variants;
 
-    # Table for Delfos annotations
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS Delfos_Data (
-            CHROM TEXT,
-            POS INTEGER,
-            ID TEXT,
-            REF TEXT,
-            ALT TEXT,
-            QUAL TEXT,
-            FILTER TEXT,
-            PHENOTYPE TEXT,
-            INTERPRETATION TEXT,
-            INTERPRETATION_REASON TEXT,
-            CLINICAL_ACTIONABILITY TEXT,
-            GENE TEXT,
-            VARIANT_ID INTEGER,
-            FOREIGN KEY (VARIANT_ID) REFERENCES Variant(idVariant)
-        )
-    ''')
+CREATE TABLE ClinGen_Variants (
+    chrom TEXT,
+    pos INTEGER,
+    id TEXT,
+    ref TEXT,
+    alt TEXT,
+    interpretation TEXT,
+    criteria_met TEXT,
+    criteria_not_met TEXT,
+    expert_panel TEXT
+);
 
-    conn.commit()
-    conn.close()
+CREATE TABLE DELFOS_Variants (
+    chrom TEXT,
+    pos INTEGER,
+    id TEXT,
+    ref TEXT,
+    alt TEXT,
+    phenotype TEXT,
+    interpretation TEXT,
+    interpretation_reason TEXT,
+    clinical_actionability TEXT,
+    gene TEXT
+);
+""")
 
-if __name__ == "__main__":
-    create_tables("db/variants.db")
-    print("Data loaded correctly!")
+conn.close()
+
+print("Data loaded succesfully!")

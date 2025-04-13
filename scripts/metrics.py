@@ -1,44 +1,78 @@
+import sqlite3
 import pandas as pd
 
-# Load delfos and clingen VCF files into DataFrames
-delfos_file = "data/VCF_ulises.vcf"
-clingen_file = "data/VCF_clingen.vcf"
+# Connect to the existing SQLite DB
+conn = sqlite3.connect("db/variants.db")
+cur = conn.cursor()
 
-def parse_vcf(vcf_file):
-    # Read VCF file into a DataFrame
-    df = pd.read_csv(vcf_file, sep="\t", comment="#")
-    return df
+#creating tables
+cur.executescript("""
+DROP TABLE IF EXISTS ClinGen_Variants;
+DROP TABLE IF EXISTS DELFOS_Variants;
+                  
+CREATE TABLE IF NOT EXISTS ClinGen_Variants (
+    chrom TEXT,
+    pos INTEGER,
+    id TEXT,
+    ref TEXT,
+    alt TEXT,
+    interpretation TEXT,
+    criteria_met TEXT,
+    criteria_not_met TEXT,
+    expert_panel TEXT
+);
 
-# Load data
-delfos_df = parse_vcf(delfos_file)
-clingen_df = parse_vcf(clingen_file)
+CREATE TABLE IF NOT EXISTS DELFOS_Variants (
+    chrom TEXT,
+    pos INTEGER,
+    id TEXT,
+    ref TEXT,
+    alt TEXT,
+    phenotype TEXT,
+    interpretation TEXT,
+    interpretation_reason TEXT,
+    clinical_actionability TEXT
+);
+""")
 
-# Standardize interpretation labels
-def standardize_interpretation(df):
-    interpretation_map = {
-        'ACCEPTED WITH STRONG EVIDENCE': 'Pathogenic',
-        'ACCEPTED WITH MODERATE EVIDENCE': 'Likely Pathogenic',
-        'Uncertain Significance': 'Uncertain Significance',
-        'Benign': 'Benign',
-        'Likely Benign': 'Likely Benign'
-    }
+query = """
+SELECT 
+    d.chrom, d.pos, d.ref, d.alt,
+    d.interpretation AS delfos_interpretation,
+    c.interpretation AS clingen_interpretation
+FROM DELFOS_Variants d
+LEFT JOIN ClinGen_Variants c
+ON d.chrom = c.chrom AND d.pos = c.pos AND d.ref = c.ref AND d.alt = c.alt
+WHERE d.phenotype LIKE '%MONOGENIC DIABETES%'
+"""
+
+df = pd.read_sql_query(query, conn)
+
+# Normalize for comparison
+df['delfos_interpretation'] = df['delfos_interpretation'].str.upper().str.strip()
+df['clingen_interpretation'] = df['clingen_interpretation'].str.title().str.strip()
+
+# Step 2: Categorize interpretation concordance
+def categorize(row):
+    delfos = row['delfos_interpretation']
+    clingen = row['clingen_interpretation']
     
-    df['Standardized_Interpretation'] = df['INTERPRETATION'].map(interpretation_map)
-    return df
+    if delfos and 'ACCEPTED' in delfos:
+        if clingen in ['Pathogenic', 'Likely Pathogenic']:
+            return 'Concordant'
+        elif clingen in ['Benign', 'Likely Benign', 'Uncertain Significance']:
+            return 'Discordant'
+        elif clingen is None:
+            return 'No ClinGen Match'
+        else:
+            return 'Unclassified'
+    return 'Not Accepted by DELFOS'
 
-# Standardize interpretations in both datasets
-delfos_df = standardize_interpretation(delfos_df)
-clingen_df = standardize_interpretation(clingen_df)
+df['concordance_status'] = df.apply(categorize, axis=1)
 
-# Merge the two DataFrames based on variant ID or position and chromosome
-merged_df = pd.merge(delfos_df[['CHROM', 'POS', 'VARIANT_ID', 'Standardized_Interpretation']],
-                     clingen_df[['CHROM', 'POS', 'VARIANT_ID', 'Standardized_Interpretation']],
-                     on=['CHROM', 'POS', 'VARIANT_ID'],
-                     suffixes=('_delfos', '_clingen'))
+# Step 3: Statistics summary
+summary = df['concordance_status'].value_counts().rename_axis('Interpretation Match').reset_index(name='Variant Count')
+print(summary)
 
-# Compare interpretations
-merged_df['Interpretation_Conflict'] = merged_df['Standardized_Interpretation_delfos'] != merged_df['Standardized_Interpretation_clingen']
-
-# Display results with conflicts
-conflicts_df = merged_df[merged_df['Interpretation_Conflict']]
-print(conflicts_df[['CHROM', 'POS', 'VARIANT_ID', 'Standardized_Interpretation_delfos', 'Standardized_Interpretation_clingen']])
+# Optional: save to CSV
+df.to_csv("interpretation_concordance_analysis.csv", index=False)
