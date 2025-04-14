@@ -55,7 +55,7 @@ def generate_vcf_from_json(json_file, output_file):
                     f"INTERPRETATION={phenotype_info['classification']['value']}",
                     f"INTERPRETATION_REASON={phenotype_info['classification']['reason']}",
                     f"CLINICAL_ACTIONABILITY={phenotype_info['clinical_actionability']}",
-                    f"GENE={','.join(variant['genes'])}",
+                    f"GENE={','.join([g for g in variant['genes'] if g])}",
                     f"VARIANT_ID={variant['variant_id']}"
                 ]
                 info_field = ";".join(info_parts)
@@ -67,7 +67,7 @@ def generate_vcf_from_json(json_file, output_file):
 
 # Run script
 if __name__ == "__main__":
-    input_json = "results/ulises/data-processed.json"
-    output_vcf = "results/ulises/ulises_output.vcf"
+    input_json = "results/ulises/data-processed-p2.json"
+    output_vcf = "results/ulises/ulises_output2.vcf"
     generate_vcf_from_json(input_json, output_vcf)
     print(f"VCF file generated: {output_vcf}")
