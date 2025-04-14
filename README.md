@@ -18,7 +18,8 @@ DGS_FINAL_PROJECT/
 │
 ├── data/                                     # Input data files (VCF format)
 │   ├── VCF_clingen.vcf                       # VCF file from ClinGen
-│   └── VCF_ulises.vcf                        # VCF file generated from Ulises module
+│   ├── VCF_ulises.vcf                        # VCF file generated from Ulises module
+│   └── VCF_ulises-p2.vcf                     # VCF file generated from Ulises module (all besides rejected)
 │
 ├── scripts/                                  # All Python scripts used in the project
 │   ├── hermes_fetch.py                       # Retrieves gene data using Hermes
