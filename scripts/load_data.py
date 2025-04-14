@@ -1,13 +1,10 @@
 import sqlite3
 import pandas as pd
-from io import StringIO
 
-# --- CONFIG ---
 CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
 DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
 DB_PATH = "db/variants.db"
 
-# --- Connect & Recreate Tables ---
 conn = sqlite3.connect(DB_PATH)
 cur = conn.cursor()
 
