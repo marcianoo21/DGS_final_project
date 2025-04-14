@@ -1,7 +1,5 @@
 import sqlite3
 
-CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
-DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
 DB_PATH = "db/variants.db"
 
 conn = sqlite3.connect(DB_PATH)
@@ -10,6 +8,8 @@ cur = conn.cursor()
 cur.executescript("""
 DROP TABLE IF EXISTS ClinGen_Variants;
 DROP TABLE IF EXISTS DELFOS_Variants;
+DROP TABLE IF EXISTS DELFOS_Variants_2;
+
 
 CREATE TABLE ClinGen_Variants (
     chrom TEXT,
