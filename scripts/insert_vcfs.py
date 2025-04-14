@@ -7,7 +7,6 @@ CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
 DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
 DB_PATH = "db/variants.db"
 
-# --- Connect & Recreate Tables ---
 conn = sqlite3.connect(DB_PATH)
 cur = conn.cursor()
 
@@ -15,7 +14,7 @@ def parse_info(info, keys):
     parsed = dict(kv.split("=", 1) for kv in info.split(";") if "=" in kv)
     return [parsed.get(k) for k in keys]
 
-# --- Load and Insert ClinGen ---
+# ClinGen 
 with open(CLINGEN_VCF_PATH, "r") as f:
     lines = [l for l in f if not l.startswith("##")]
 clingen_df = pd.read_csv(StringIO("".join(lines)), sep="\t")
@@ -25,7 +24,7 @@ clingen_df = clingen_df.rename(columns={'#CHROM': 'chrom', 'POS': 'pos', 'ID': '
 clingen_df[['chrom', 'pos', 'id', 'ref', 'alt', 'interpretation', 'criteria_met', 'criteria_not_met', 'expert_panel']]\
     .to_sql("ClinGen_Variants", conn, if_exists="append", index=False)
 
-# --- Load and Insert DELFOS ---
+# DELFOS 
 with open(DELFOS_VCF_PATH, "r") as f:
     lines = [l for l in f if not l.startswith("##")]
 delfos_df = pd.read_csv(StringIO("".join(lines)), sep="\t")
