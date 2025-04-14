@@ -1,9 +1,11 @@
-# 🧬 DGS Final Project 
-# – Monogenic Diabetes Variant Analysis
+# 🧬 DGS Final Project – Monogenic Diabetes Variant Analysis
 
-This project evaluates the clinical utility of the DELFOS platform by comparing its ability to identify Monogenic Diabetes-related genetic variants against ClinGen, the current gold standard.
+Monogenic diabetes is a rare form of diabetes that results from a mutation in a single gene. This genetic change can affect the way the body produces or uses insulin, leading to high blood sugar levels. Unlike Type 1 or Type 2 diabetes, monogenic diabetes often appears earlier in life and sometimes can be managed with targeted treatments, such as specific oral medications rather than insulin. Understanding the genetic basis of monogenic diabetes is key to accurate diagnosis and personalized care.
 
-The project is divided into two main parts:
+## Aim of the Project
+The following project evaluates the clinical utility of the Delfos platform by comparing its ability to identify Monogenic Diabetes-related genetic variants against ClinGen, the current gold standard.
+The project was divided into two main parts:
+
 1. **Knowledge Base Integration** using Hermes, Ulises, Delfos, and Sibila.
 2. **Variant Comparison** using SQL-based evaluation of ClinGen vs DELFOS data.
 
@@ -45,34 +47,6 @@ DGS_FINAL_PROJECT/
 ├── README.md                     # Project overview and setup instructions
 └── .gitignore                    # Git ignore file for excluding untracked files
 ```
-
-
-## 🚀 How to Run the Project
-// TODO: Add instructions on how to run the project
-
-
-## 🧾 Technical Documentation
-The final technical document must be written in scientific-article style and include the following sections:
-
-### A. Introduction
-
-- Background on Monogenic Diabetes and its relevance in genomic medicine.
-- The importance of accurate genetic variant interpretation for clinical decision-making.
-- Motivation for comparing the DELFOS platform with the ClinGen gold standard to assess clinical utility.
-
-### B. Project Part I Results
-
-- **Hermes:**  
-  Overview of the methodology used to gather genetic variants related to Monogenic Diabetes using the Hermes module.  
-  This involved retrieving all relevant variant data needed to enrich the Delfos knowledge base, enabling meaningful interpretation of patient-specific variants.
-
-- **Ulises:**  
-  Summary of the clinically relevant variants identified using the Ulises module.  
-  These variants were filtered for clinical significance to ensure relevance for diagnosis and treatment decisions in Monogenic Diabetes.
-
-- **Sibila:**  
-  Visual insights generated using Sibila, focusing on relationships between variants and associated clinical features.  
-  These visualizations supported interpretation by illustrating genotype–phenotype correlations, helping to validate the relevance of identified variants.
 
 
 ## 👨🏻‍🏫 Presentation
