@@ -1,5 +1,4 @@
 import sqlite3
-import pandas as pd
 
 CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
 DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
