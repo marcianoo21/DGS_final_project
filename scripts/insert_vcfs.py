@@ -4,7 +4,7 @@ from io import StringIO
 
 
 CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
-DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
+DELFOS_VCF_PATH = "data/VCF_ulises_p2.vcf"
 DB_PATH = "db/variants.db"
 
 conn = sqlite3.connect(DB_PATH)

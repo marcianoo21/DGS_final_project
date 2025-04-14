@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 
 CLINGEN_VCF_PATH = "data/VCF_clingen.vcf"
-DELFOS_VCF_PATH = "data/VCF_ulises.vcf"
+DELFOS_VCF_PATH = "data/VCF_ulises_p2.vcf"
 DB_PATH = "db/variants.db"
 
 conn = sqlite3.connect(DB_PATH)
@@ -26,7 +26,7 @@ print("Data after deduplication:", df.shape[0])
 # finding valid variations
 df = df[df['delfos_interpretation'].str.contains("ACCEPTED", na=False)]
 
-print("Data after filtering for 'ACCEPTED WITH STRONG EVIDENCE' in DELFOS:", df.shape)
+print("Data after filtering for 'ACCEPTED' in DELFOS:", df.shape)
 
 def categorize(row):
     delfos = row['delfos_interpretation']
