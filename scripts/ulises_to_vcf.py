@@ -67,7 +67,7 @@ def generate_vcf_from_json(json_file, output_file):
 
 # Run script
 if __name__ == "__main__":
-    input_json = "results/ulises/data-processed-p2.json"
-    output_vcf = "results/ulises/ulises_output2.vcf"
+    input_json = "results/ulises/data-processed.json"
+    output_vcf = "results/ulises/ulises_output.vcf"
     generate_vcf_from_json(input_json, output_vcf)
     print(f"VCF file generated: {output_vcf}")

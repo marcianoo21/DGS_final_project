@@ -4,10 +4,12 @@ Monogenic diabetes is a rare form of diabetes that results from a mutation in a 
 
 ## Aim of the Project
 The following project evaluates the clinical utility of the Delfos platform by comparing its ability to identify Monogenic Diabetes-related genetic variants against ClinGen, the current gold standard.
+
 The project was divided into two main parts:
 
 1. **Knowledge Base Integration** using Hermes, Ulises, Delfos, and Sibila.
 2. **Variant Comparison** using SQL-based evaluation of ClinGen vs DELFOS data.
+
 
 ---
 
@@ -45,11 +47,16 @@ DGS_FINAL_PROJECT/
 ├── docker-compose.yaml                           # Docker Compose configuration for project setup
 ├── LICENSE                                       # License information
 ├── README.md                                     # Project overview and setup instructions
+├── requirements.txt                              # List of dependencies needed to run the project
 └── .gitignore                                    # Git ignore file for excluding untracked files
 ```
 
 ## 👨🏻‍🏫 Presentation
 Click [here](https://www.canva.com/design/DAGjSsQyAbA/1Lu7jkZztlKkHk9UyDtXvA/edit?utm_content=DAGjSsQyAbA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) to access the presentation.
+
+
+## 📄 Documentation
+Click [here](https://upvedues-my.sharepoint.com/:w:/g/personal/zpajak_upv_edu_es/ER3eCKAdCqRIk6KCP3ve-wUBElyombrPd_NujMloejqCRg?e=OcWpoy) to access the detailed documentation of the project.
 
 
 ## 👥 Authors
